@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+{% if user.is_employer %}
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2>Your hire requests</h2>
+			<nav id="breadcrumbs">
+				<ul>
+					<li>You are here:</li>
+					<li><a href="#">Home</a></li>
+					<li>My hire requests</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+<div class="container">
+	
+	<!-- Table -->
+	<div class="sixteen columns">
+
+		<p class="margin-bottom-25" style="float: left;">The job applications for <strong><a href="#">Power Systems User Experience Designer</a></strong> are listed below.</p>
+		<strong><a href="#" class="download-csv">Download CSV</a></strong>
+
+	</div>
+
+
+	<div class="eight columns">
+		<!-- Select -->
+		<select data-placeholder="Filter by status" class="chosen-select-no-single">
+			<option value="">Filter by status</option>
+			<option value="new">New</option>
+			<option value="interviewed">Interviewed</option>
+			<option value="offer">Offer extended</option>
+			<option value="hired">Hired</option>
+			<option value="archived">Archived</option>
+		</select>
+		<div class="margin-bottom-15"></div>
+	</div>
+
+	<div class="eight columns">
+		<!-- Select -->
+		<select data-placeholder="Newest first" class="chosen-select-no-single">
+			<option value="">Newest first</option>
+			<option value="name">Sort by name</option>
+			<option value="rating">Sort by rating</option>
+		</select>
+		<div class="margin-bottom-35"></div>
+	</div>
+
+
+	<!-- Applications -->
+	<div class="sixteen columns">
+		
+		<!-- Application #1 -->
+            {% for h in hire %}
+		<div class="application">
+			<div class="app-content">
+				
+				<!-- Name / Avatar -->
+				<div class="info">
+                              {% if h.employer.avatar %}
+					<img src="{{h.employer.avatar.url}}" alt="">
+                              {% else %}
+					<img src="{% static 'style/images/resumes-list-avatar-01.png' %}" alt="">
+                              {% endif %}
+					<span>{{h.employer.first_name}} {{h.employer.last_name}}</span>
+					<ul>
+						
+						<li><a href="mailto:{{h.employer.email}}"><i class="fa fa-envelope"></i> Contact</a></li>
+					</ul>
+				</div>
+				
+				<!-- Buttons -->
+				<div class="buttons">
+					<a href="#one-1" class="button gray app-link"><i class="fa fa-pencil"></i> Edit</a>
+					<a href="#" class="button gray app-link"><i class="fa fa-sticky-note"></i> Massage</a>
+					<a href="#three-1" class="button gray app-link"><i class="fa fa-plus-circle"></i> Show Details</a>
+				</div>
+				<div class="clearfix"></div>
+
+			</div>
+
+			<!--  Hidden Tabs -->
+			<div class="app-tabs">
+
+				<a href="#" class="close-tab button gray"><i class="fa fa-close"></i></a>
+				
+                        <div class="app-tab-content" id="one-1">
+                              
+                              <form method="POST"> {% csrf_token %}
+					<div class="select-grid">
+						<select name="status" data-placeholder="Application Status" class="chosen-select-no-single">
+							<option value="{{h.status}}">{{h.status}}</option>
+							<option value="Accepted">Accept this request </option>
+							<option value="Rejected">Reject this request</option>
+							
+						</select>
+					</div>
+
+					<div class="select-grid">
+                                    <input style="display: none;" readonly type="text" name="id" value="{{h.id}}" >
+					</div>
+
+					<div class="clearfix"></div>
+					<button type="submit" class="button margin-top-15">Save</button>
+                              </form>
+
+			    </div>
+			     
+			    <!-- Third Tab -->
+			    <div class="app-tab-content"  id="three-1">
+					<i>Company name:</i>
+					<span>{{h.employer.company_name}}</span>
+
+					<i>About the company</i>
+					<span>{{ h.about_company|safe }}</span>
+
+					<i>Message:</i>
+					<span>{{ h.massage|safe }}</span>
+			    </div>
+
+			</div>
+
+			<!-- Footer -->
+			<div class="app-footer">
+
+
+				<ul>
+					<li><i class="fa fa-check"></i> {{h.status}}</li>
+
+                              {% if h.new %}
+					<li><i class="fa fa-file-text-o"></i> New</li>
+                              {% else %}
+                              <li><i class="fa fa-file-text-o"></i> Viewed </li>
+                              {% endif %}
+                              
+					<li><i class="fa fa-calendar"></i> {{ h.date }}</li>
+				</ul>
+				<div class="clearfix"></div>
+
+			</div>
+		</div>
+            {% endfor %}
+
+
+		
+
+	</div>
+</div>
+
+{% else %}
+<br><br><br>
+<center><h3>Does not exist</h3></center>
+<br><br><br>
+{% endif %}
+
+{% endblock content %}

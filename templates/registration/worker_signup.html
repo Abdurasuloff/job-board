@@ -1,0 +1,12 @@
+{% if user.is_worker or user.is_employer  %}
+<h1>abc</h1>
+{% else %}
+<form method="POST"  action="{% url 'login' %}" >{% csrf_token %}
+
+      Image<input type="file" name="avatar" accept="image/*" ><br>
+      Phone number <input type="tel" name="phone_number"  ><br>
+      location <input type="text" name="location"  ><br>
+      resume <input type="file" name="resume"  ><br>
+      <button type="submit" >sd</button>
+</form>
+{% endif %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if user.is_worker %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2>Manage My Applications</h2>
+			<nav id="breadcrumbs">
+				<ul>
+					<li>You are here:</li>
+					<li><a href="#">Home</a></li>
+					<li>Job Dashboard</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+<div class="container">
+	
+	<!-- Table -->
+	<div class="sixteen columns">
+
+
+		<table class="manage-table responsive-table">
+
+			<tr>
+				<th><i class="fa fa-file-text"></i> Vacancy Title</th>
+				<th><i class="fa fa-file-text"></i> Vacancy owner</th>
+				<th><i class="fa fa-check-square-o"></i> Viewed</th>
+				<th><i class="fa fa-calendar"></i> Status</th>
+				<th><i class="fa fa-calendar"></i> Request date</th>
+				<th><i class="fa fa-user"></i> My massage</th>
+				<th></th>
+			</tr>
+					
+			<!-- Item #1 -->
+                  {% for application in applications %}
+			<tr>
+				<td class="title"><a href="/vacancy-detail/{{application.vacancy.id}}">{{application}}</a></td>
+				<td class="title"><a href="/chat/{{application.vacancy.id}}">{{application.vacancy.author.first_name}}</a></td>
+                        {%if application.new%}
+				<td class="centered">Yes</td>
+                        {% else %}
+				<td class="centered">No</td>
+                        {% endif %}
+				<td>{{application.status}}</td>
+				<td>{{application.date}}</td>
+				<td class="centered">{{application.massage}}</td>
+                        
+				
+			</tr>
+                 
+                  {% endfor %}
+					
+			
+		</table>
+
+		
+
+	</div>
+
+</div>
+
+{% else %}
+<br><br><br>
+<center><h3>Does not exist</h3></center>
+{% endif %}
+
+{% endblock content %}

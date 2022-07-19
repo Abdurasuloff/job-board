@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single submit-page">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2><i class="fa fa-plus-circle"></i> Add Job</h2>
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+<div class="container">
+{% if user.is_employer %}	
+	<!-- Submit Page -->
+	<div class="sixteen columns">
+		<div class="submit-page">
+            <form method="POST"   >
+                  {% csrf_token %}      
+
+			<!-- Title -->
+			<div class="form">
+				<h5>Job Title</h5>
+				<input class="search-field" name="title" type="text" placeholder="e.g Django Web developer" required />
+			</div>
+
+			<!-- Location -->
+			<div class="form">
+				<h5>Location </h5>
+				<input class="search-field" name="location" type="text" placeholder="e.g. Uzbekistan, Fergana" required/>
+			</div>
+
+			<!-- Job Type -->
+			<div class="form">
+				<h5>Job Type</h5>
+				<select name="work_type" required data-placeholder="Full-Time" class="chosen-select-no-single">
+					<option value="Full-Time">Full-Time</option>
+					<option value="Part-Time">Part-Time</option>
+					<option value="Internship">Internship</option>
+					<option value="Freelance">Freelance</option>
+					<option value="Temporary">Temporary</option>
+				</select>
+			</div>
+
+                  <!-- Needed experience -->
+			<div class="form">
+				<h5>Needed experience</h5>
+                        <input class="search-field" list="experience" name="needed_experience" type="text" placeholder="1+ years" required/>
+                        <datalist id="experience">
+					<option value="Junior">Junior</option>
+					<option value="Middle">Middle</option>
+					<option value="Senior">Senior</option>
+					<option value="Team Leader">Team Leader</option>
+					<option value="1+ year">1+ year</option>
+					<option value="2+ years">2+ years</option>
+					<option value="3+ years">3+ years</option>
+					<option value="4+ years">4+ years</option>
+					<option value="5+ years">5+ years</option>
+				</datalist>	
+                              
+				
+			</div>
+
+                  <!-- Salary -->
+                  <div class="form">
+				<h5>Salary in US dollars</h5>
+                        <input  class="search-field" name="cost" type="number" placeholder="e.g 15" required/><br>
+				<select name="cost_for" required data-placeholder="Full-Time" class="chosen-select-no-single">
+					<option value="hour">Salary for per hour</option>
+					<option value="day">Salary for per day</option>
+					<option value="month">Salary for per month</option>
+					<option value="year">Salary for per year</option>
+					<option value="work">Salary for this work</option>
+				</select>
+			</div>
+
+
+			<!-- Choose Category -->
+			<div class="form">
+				<div class="select">
+					<h5>Category</h5>
+					<select name="category" required data-placeholder="Choose Categories" class="chosen-select" >
+                                    {% for category in categories %}
+						<option value="{{category.id}}">{{category.name}}</option>
+                                    {% endfor %}
+						
+					</select>
+				</div>
+			</div>
+
+			<!-- Tags -->
+			<div class="form">
+				<h5>Job Tags <span>(optional)</span></h5>
+				<input name="tags" class="search-field" type="text" placeholder="e.g. PHP Social Media Management" multiple/>
+				<p class="note">Comma separate tags, such as required skills or technologies, for this job.</p>
+			</div>
+
+
+			<!-- Description -->
+			<div class="form">
+				<h5>Description</h5>
+				<textarea name="description" required class="WYSIWYG" name="summary" cols="40" rows="3" id="summary" spellcheck="true"></textarea>
+			</div>
+
+			
+			<!-- Company Details -->
+			<div class="divider"><h3>Company Details</h3></div>
+
+			<!-- Company Name -->
+			<div class="form">
+				<h5>Company Name</h5>
+				<input required name="company_name" type="text" placeholder="Enter the name of the company">
+			</div>
+
+			
+			<!-- Teagline -->
+			<div class="form">
+				<h5>Tagline <span>/span></h5>
+				<input name="tagline" required type="text" placeholder="Briefly describe your company">
+			</div>
+
+			
+
+			<!-- Twitter -->
+			<div class="form">
+				<h5>Email</h5>
+				<input required name="company_email" type="text" placeholder="@yourcompany">
+			</div>
+
+			<!-- Logo -->
+			<div class="form">
+				<h5>Logo <span>(optional)</span></h5>
+                        <input type="file" name="company_logo" accept="image/*" id="id_company_logo">
+			</div>
+
+
+			<div class="divider margin-top-0"></div>
+			<button type="submit" class="button big margin-top-5">Publish & Preview <i class="fa fa-arrow-circle-right"></i></button>
+
+            </form>      
+		</div>
+	</div>
+{% else %}
+<center><h3>You are not employer</h3></center>
+{% endif %}
+</div>
+
+
+{% endblock content %}

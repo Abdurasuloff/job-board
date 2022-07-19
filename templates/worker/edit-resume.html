@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single submit-page">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2><i class="fa fa-plus-circle"></i> Edit Resume</h2>
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+<div class="container">
+	{% if massage %}
+      <br><br><br>
+      <center><h3>{{massage}}</h3></center>
+      <br><br><br>
+      {% else %}
+	<!-- Submit Page -->
+	<div class="sixteen columns">
+            <form method="post" >{% csrf_token %}
+		<div class="submit-page">
+
+
+                  <!-- Notice -->
+			<div class="notification notice closeable margin-bottom-40">
+				<p>All other requeired informations will taken your account!!!</p>
+			</div>
+
+
+			<!-- Title -->
+			<div class="form">
+				<h5>Professional Title</h5>
+				<input required name="title" class="search-field" type="text" placeholder="e.g. Web Developer" value="{{resume.title}}"/>
+			</div>
+
+
+                  <!-- Category -->
+			<div class="form">
+				<div class="select">
+					<h5>Category</h5>
+					<select name="category" data-placeholder="Choose Categories" class="chosen-select" >
+                                    <option value="{{resume.category.id}}">{{resume.category.name}}</option>
+                                    {% for category in categories %}
+						<option value="{{category.id}}">{{category.name}}</option>
+                                    {% endfor %}
+					</select>
+				</div>
+			</div>
+
+
+                  <!-- Description -->
+                  <div class="form">
+				<h5>Description(displayed directly to the employers)</h5>
+				<input required name="description"  class="search-field" type="text" placeholder="Somethings about you or your job" value="{{resume.description}}"/>
+			</div>
+
+                   <!-- Salary -->
+                   <div class="form">
+				<h5>Salary in US dollars</h5>
+                        <input value="{{resume.cost}}"  class="search-field" name="cost" type="number" placeholder="e.g 15" required/><br>
+				<select name="cost_for" required data-placeholder="Full-Time" class="chosen-select-no-single">
+					<option value="{{resume.cost_for}}">Salary for per {{resume.cost_for}}</option>
+					<option value="hour">Salary for per hour</option>
+					<option value="day">Salary for per day</option>
+					<option value="month">Salary for per month</option>
+					<option value="year">Salary for per year</option>
+					<option value="work">Salary for this work</option>
+				</select>
+			</div>
+
+                  <!-- Website -->
+			<div class="form">
+				<h5>Website <span>(optional)</span></h5>
+				<input name="url" type="text" placeholder="http://" value="{{resume.url}}">
+			</div>
+
+
+
+			<div class="divider margin-top-0 padding-reset"></div>
+			<button type="submit" class="button big margin-top-5">Save Changes <i class="fa fa-arrow-circle-right"></i></button>
+			<a class="delete" href="/delete-resume/{{resume.id}}" >Delete resume </i></a>
+
+		</div>
+            </form>
+	</div>
+      {% endif %}
+
+</div>
+
+
+{% endblock content %}

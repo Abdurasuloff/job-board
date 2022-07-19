@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2>Manage Applications</h2>
+			<nav id="breadcrumbs">
+				<ul>
+					<li>You are here:</li>
+					<li><a href="#">Home</a></li>
+					<li>Job Dashboard</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+<div class="container">
+	{% if  massage %}
+	<br><br><br><center><h3>{{massage}}</h3></center><br><br><br>
+	{% else %}
+	<!-- Table -->
+	<div class="sixteen columns">
+ 
+		<h4 class="margin-bottom-25" style="float: left;">The job applications for <strong><a href="#">{{ vacancy }}</a></strong> are listed below(filtered by newest).</h4>
+
+	</div>
+
+
+
+	<!-- Applications -->
+	<div class="sixteen columns">
+		
+		<!-- Application #1 -->
+            {% for app in applications %}
+		<div class="application">
+			<div class="app-content">
+				
+				<!-- Name / Avatar -->
+				<div class="info">
+					<img src="{% static 'style/images/resumes-list-avatar-01.png' %}" alt="">
+					<span>{{app.worker.first_name}} {{app.worker.last_name}}</span>
+					<ul>
+						<li><a href="{{app.resume.url}}" download ><i class="fa fa-file-text"></i> Download CV</a></li>
+						<li><a href="mailto:{{app.worker.email}}"><i class="fa fa-envelope"></i> Contact</a></li>
+					</ul>
+				</div>
+				
+				<!-- Buttons -->
+				<div class="buttons">
+					<a href="#one-1" class="button gray app-link"><i class="fa fa-pencil"></i> Edit</a>
+					<a href="#" class="button gray app-link"><i class="fa fa-inbox"></i> Send Massage</a>
+					<a href="#three-1" class="button gray app-link"><i class="fa fa-plus-circle"></i> Show Details</a>
+				</div>
+				<div class="clearfix"></div>
+
+			</div>
+
+			<!--  Hidden Tabs -->
+			<div class="app-tabs">
+
+				<a href="#" class="close-tab button gray"><i class="fa fa-close"></i></a>
+				
+				<!-- First Tab -->
+			    <div class="app-tab-content" id="one-1">
+
+					<div class="select-grid">
+						<select data-placeholder="Application Status" class="chosen-select-no-single">
+							<option value="In Progress">In Progress</option>
+							<option value="Hired">Hire</option>
+							<option value="Rejected">Reject this application</option>
+						</select>
+					</div>
+
+					<div class="clearfix"></div>
+					<a href="#" class="button margin-top-15">Save</a>
+					<a href="#" class="button gray margin-top-15 delete-application">Delete this application</a>
+
+			    </div>
+			    
+			  
+			    
+			    <!-- Third Tab -->
+			    <div class="app-tab-content"  id="three-1">
+					<i>Full Name:</i>
+					<span>{{app.worker.first_name}} {{app.worker.last_name}}</span>
+
+					<i>Email:</i>
+					<span><a href="mailto:{{app.worker.email}}">{{app.worker.email}}</a></span>
+
+					<i>Message:</i>
+					<span>{{app.massage}}</span>
+			    </div>
+
+			</div>
+
+			<!-- Footer -->
+			<div class="app-footer">
+
+				
+				<ul>
+                              <li><i class="fa fa-check"></i> {{app.status}}</li>
+                              {% if app.new %}
+					<li><i class="fa fa-file-text-o"></i> New</li>
+                              {% else %}
+					<li><i class="fa fa-file-text-o"></i> Viewed</li>
+                              {% endif %}
+
+					<li><i class="fa fa-calendar"></i> {{app.date}}</li>
+				</ul>
+				<div class="clearfix"></div>
+
+			</div>
+		</div>
+            {% endfor %}
+
+</div>
+{% endif %}
+</div>
+
+{% endblock content %}

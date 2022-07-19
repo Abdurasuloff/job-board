@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2>Manage Jobs</h2>
+			<nav id="breadcrumbs">
+				<ul>
+					<li>You are here:</li>
+					<li><a href="#">Home</a></li>
+					<li>Vacancy Dashboard</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+<div class="container">
+	{% if  massage %}
+	<br><br><br><center><h3>{{massage}}</h3></center><br><br><br>
+	{% else %}
+	<!-- Table -->
+	<div class="sixteen columns">
+
+		<p class="margin-bottom-25">Your listings are shown in the table below. Expired listings will be automatically removed after 30 days.</p>
+
+		<table class="manage-table responsive-table">
+
+			<tr>
+				<th><i class="fa fa-file-text"></i> Title</th>
+				<th><i class="fa fa-calendar"></i> Date Posted</th>
+				<th><i class="fa fa-lock"></i> Is closed</th>
+				<th><i class="fa fa-user"></i> Applications</th>
+				<th></th>
+			</tr>
+					
+			{% for ad in my_ads %}
+					
+			<!-- Item #2 -->
+			<tr>
+				<td class="title"><a href="#">{{ad.title}}</a></td>
+				<td class="centered" >{{ad.date}}</td>
+				{% if ad.is_closed %}
+				<td  class="centered">Yes</td>
+				{% else %}
+				<td class="centered">No</td>
+				{% endif %}
+				{% if ad.applications %}
+				<td class="centered"><a href="/manage-applications/{{ad.id}}" class="button">Show ({{ad.applications}})</a></td>
+				{% else %}
+				<td class="centered">-</td>
+				{% endif %}
+				<td class="action">
+					{% if ad.is_closed %}
+					<a href="#"><i class="fa fa-check"></i> Setted as filled</a>
+					{% else %}
+					<form method="POST">{% csrf_token %}<input name="id" style="display: none; " value="{{ad.id}}" >
+					<button style=" margin-left: -15px; background-color: rgba(255, 255, 255, 0); color: rgba(60, 231, 17, 0.945);"><i class="fa  fa-check "></i> Mark Filled</button>
+					</form>
+					{% endif %}
+					<a href="/edit-vacancy/{{ad.id}}"><i class="fa fa-pencil"></i> Edit</a>
+					
+				</td>
+			</tr>	
+
+		      {% endfor %}
+
+		</table>
+
+		<br>
+		<a href="#" class="button">Add Job</a>
+
+	</div>
+	
+	
+	{% endif %}
+</div>
+
+
+{% endblock content %}

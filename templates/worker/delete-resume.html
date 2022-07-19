@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+        <!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2>Manage My Applications</h2>
+			<nav id="breadcrumbs">
+				<ul>
+					<li>You are here:</li>
+					<li><a href="#">Home</a></li>
+					<li>Job Dashboard</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+</div>
+<div class="container">
+        <form action="" method="post">{% csrf_token %}
+        <h3>"Are you sure to delete your resume</h3>
+        <button  type="submit">Yes</button>
+    </form>
+</div>
+{% endblock content %}

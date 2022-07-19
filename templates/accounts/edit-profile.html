@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single submit-page">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2><i class="fa fa-edit"></i> Edit Profile</h2>
+		</div>
+
+	</div>
+</div>
+<div class="container">
+      <form method="POST" >{% csrf_token %}
+            <div class="div">
+                  <h5> First name: </h5>
+                  <input required class="search-field" type="text" name="first_name" value="{{user.first_name}}" placeholder="Your first name" >
+            </div>
+            <br>
+            <div class="div">
+                  <h5> Last name: </h5>
+                  <input  class="search-field" type="text" name="last_name" value="{{user.last_name}}" placeholder="Your last name (optional)" >
+            </div>
+            <br>
+            
+            <div class="div">
+                  <h5> Email: </h5>
+                  <input required class="search-field" type="email" name="email" value="{{user.email}}" placeholder="Your email" >
+            </div>
+            <br>
+            <div class="div">
+                  <h5> Username: </h5>
+                  <input required class="search-field" type="text" name="username" value="{{user.username}}" placeholder="Your username" >
+            </div>
+            <br>
+            <div class="div">
+                  <h5> Phone number: </h5>
+                  <input required class="search-field" type="number" name="phone_number" value="{{user.phone_number}}" placeholder="+998 90 777 77 77" >
+            </div>
+            <br>
+            <div class="div">
+                  <h5> Location: </h5>
+                  <input required class="search-field" type="text" name="location" value="{{user.location}}" placeholder="Your location" >
+            </div>
+            <br>
+            {% if user.is_worker %}
+            <div class="div">
+                  <h5> Resume: (now: <a href="{{user.resume}}" download >Download my resume</a>) </h5>
+                  <input  class="search-field" type="file" name="resume" placeholder="Upload resume" >
+            </div>
+            {% else %}
+            <div class="div">
+                  <h5> Company name:  </h5>
+                  <input class="search-field" type="text" value="{{user.company_name}}" name="company_name" placeholder="Your company name" >
+            </div>
+            {% endif %}
+
+            <div class="divider margin-top-0 padding-reset"></div>
+		<button type="submit" class="button big margin-top-5">Save Changes <i class="fa fa-arrow-circle-right"></i></button>
+      </form>
+</div>
+
+{% endblock content %}

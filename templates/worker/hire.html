@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if massage %}
+<br><br><br>
+<center><h3>{{massage}}</h3></center>
+<br><br><br>
+{% else %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single submit-page">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2><i class="fa fa-plus-circle"></i> Send Hire request to  "{{resume.owner.first_name}} {{resume.owner.last_name}}"</h2>
+		</div>
+
+	</div>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="container">
+	
+	<!-- Submit Page -->
+	<div class="sixteen columns">
+		<div class="submit-page">
+                  <form method="POST"  >{% csrf_token %}
+
+			<!-- Notice -->
+			<div class="notification notice closeable margin-bottom-40">
+				<p>We get other required informations from your account</p>
+			</div>
+
+			<!-- Title -->
+			<div class="form">
+				<h5>Your massage to  {{resume.owner.first_name}}. He/She can see this massage directly</h5>
+				<input name="hire_massage" class="search-field" type="text" placeholder="Massage to worker" value=""/>
+			</div>
+
+
+			<!-- Description -->
+			<div class="form">
+				<h5>About your company</h5>
+				<textarea class="WYSIWYG" name="about_company" cols="40" rows="3" id="summary" spellcheck="true"></textarea>
+			</div>
+
+
+                  
+				</div>
+			</div>
+
+
+			<div class="divider margin-top-0 padding-reset"></div>
+			<button class="button big margin-top-5">Send request         <i class="fa fa-arrow-circle-right"></i></button>
+            </form>
+		</div>
+	
+{% endif %}
+
+{% endblock content %}

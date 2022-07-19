@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar">
+	<div class="container">
+		<div class="ten columns">
+			<span><a href="browse-jobs.html">Restaurant / Food Service</a></span>
+			<h2>{{vacancy.title}}<span class="{{vacancy.work_type|lower}}">{{vacancy.work_type}}</span></h2>
+		</div>
+
+		
+
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+<div class="container">
+	
+	<!-- Recent Jobs -->
+	<div class="eleven columns">
+	<div class="padding-right">
+		
+		<!-- Company Info -->
+		<div class="company-info">
+                  {% if vacancy.company_logo %}
+                  <img src="{{vacancy.company_logo.url}}" alt="">
+                  {% else %}
+			<img src="{% static 'style/images/company-logo.png' %}" alt="">
+                  {% endif %}
+			<div class="content">
+				<h4>{{vacancy.company_name}}</h4>
+				<span><a href="mailto:{{vacancy.company_email}}"><i class="fa fa-envelope"></i> {{vacancy.company_email}}</a></span>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+
+		<p class="margin-reset">
+                  {{vacancy.tagline}}
+		</p>
+
+		<br><hr>
+		<p>{{vacancy.description|safe}}</p>
+
+		
+
+	</div>
+	</div>
+
+
+	<!-- Widgets -->
+	<div class="five columns">
+
+		<!-- Sort by -->
+		<div class="widget">
+			<h4>Overview</h4>
+
+			<div class="job-overview">
+				
+				<ul>
+					<li>
+						<i class="fa fa-map-marker"></i>
+						<div>
+							<strong>Location:</strong>
+							<span>{{vacancy.location}}</span>
+						</div>
+					</li>
+					<li>
+						<i class="fa fa-user"></i>
+						<div>
+							<strong>Job Title:</strong>
+							<span>{{vacancy.title}}</span>
+						</div>
+					</li>
+					<!--<li>
+						<i class="fa fa-clock-o"></i>
+						<div>
+							<strong>Hours:</strong>
+							<span>40h / week</span>
+						</div>
+					</li>-->
+					<li>
+						<i class="fa fa-money"></i>
+						<div>
+							<strong>Rate:</strong>
+							<span>${{vacancy.cost}} / {{vacancy.cost_for}}</span>
+						</div>
+					</li>
+				</ul>
+
+                        {% if  sended %}
+                        <a href="/my-applications" class=" button">Request sended</a>
+				{% elif user.is_employer %}
+				<a href="" class=" button">Not available</a>
+                        {% else %}
+				<a href="#small-dialog" class="popup-with-zoom-anim button">Apply For This Job</a>
+                        {% endif %}
+
+				<div id="small-dialog" class="zoom-anim-dialog mfp-hide apply-popup">
+					<div class="small-dialog-headline">
+						<h2>Apply For This Job</h2>
+					</div>
+
+					<div class="small-dialog-content">
+						<form method="POST" >{% csrf_token %}
+							<textarea required name="massage" placeholder="Your message / cover letter sent to the employer"></textarea>
+							<!-- Upload CV -->
+
+							<div class="upload-info"><strong>Upload your CV (optional)</strong> <span>Max. file size: 5MB</span></div>
+							<div class="clearfix"></div>
+
+							
+                                          <input type="file" name="resume" value="{{request.user.resume}}" >
+							<div class="divider"></div>
+
+							<button type="submit" class="send">Send Application</button>
+						</form>
+					</div>
+					
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+	<!-- Widgets / End -->
+
+
+</div>
+
+{% endblock content %}
+
