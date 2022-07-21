@@ -53,7 +53,7 @@
 					</ul>
 				</li>
 				{% else %}
-				<li><a href="#">Show Vacancies</a>
+				<li><a href="#">Show vacancies</a>
 					<ul>
 						<li><a href="job-page.html">Job Page</a></li>
 						<li><a href="job-page-alt.html">Job Page Alternative</a></li>
@@ -65,7 +65,7 @@
 				</li>
 				{% endif %}
 
-				<li><a href="#">for workers</a>
+				<li><a href="#">For workers</a>
 					<ul>
 						{% for category in categories %}
 						<li><a href="/category-jobs/{{category.id}}">{{ category.name }}</a></li>
