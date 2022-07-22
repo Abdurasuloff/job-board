@@ -37,35 +37,33 @@
 
 		<!-- Logo -->
 		<div id="logo">
-			<h1><a href="index.html"><img src="{% static 'style/images/logo.png' %}" alt="Work Scout" /></a></h1>
+			<h1><a href="/"><img src="{% static 'style/images/logo.png' %}" alt="Work Scout" /></a></h1>
 		</div>
 
 		<!-- Menu -->
 		<nav id="navigation" class="menu">
 			<ul id="responsive">
 				{% if user.is_employer %}
-				<li><a href="index.html">Find Talends</a>
+				<li><a >Employer Tools</a>
 					<ul>
-						{% for category in categories %}
-						<li><a href="index.html">{{category.name}}</a></li>
-						{% endfor %}
 						
+						<li><a href="/new-vacancy">New Vacancy</a></li>
+						<li><a href="/manage-vacancies">Manage Vacancies</a></li>
+						<li><a href="/hire-requests">Hire requests</a></li>
 					</ul>
 				</li>
 				{% else %}
-				<li><a href="#">Show vacancies</a>
+				<li><a href="#">Employee Tools</a>
 					<ul>
-						<li><a href="job-page.html">Job Page</a></li>
-						<li><a href="job-page-alt.html">Job Page Alternative</a></li>
-						<li><a href="resume-page.html">Resume Page</a></li>
-						<li><a href="shortcodes.html">Shortcodes</a></li>
-						<li><a href="pricing-tables.html">Pricing Tables</a></li>
-						<li><a href="contact.html">Contact</a></li>
+						
+						<li><a href="manage-hire-requests">Hire requests for me</a></li>
+						<li><a href="my-applications">My applications</a></li>
+						
 					</ul>
 				</li>
 				{% endif %}
 
-				<li><a href="#">For workers</a>
+				<li><a href="#">Find workers</a>
 					<ul>
 						{% for category in categories %}
 						<li><a href="/category-jobs/{{category.id}}">{{ category.name }}</a></li>

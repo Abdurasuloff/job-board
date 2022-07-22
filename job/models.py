@@ -51,6 +51,7 @@ class Apply(models.Model):
       status = models.CharField(max_length=70, default="In Progress")
       deleted = models.BooleanField(default=False)
       edited = models.BooleanField(default=False)
+      is_done = models.BooleanField(default=False)
 
       def __str__(self):
         return self.vacancy.title
@@ -58,5 +59,10 @@ class Apply(models.Model):
       def get_absolute_url(self):
         return reverse('index')
 
-      
+class Done(models.Model):
+      date=models.DateTimeField(auto_now_add=True)
+      vacancy=models.ForeignKey(Vacancy, on_delete=models.CASCADE)  
+      application = models.ForeignKey(Apply, on_delete=models.CASCADE) 
+      comment = models.CharField(max_length=200, null=True, blank=True) 
+
 

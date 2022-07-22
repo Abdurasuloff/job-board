@@ -60,7 +60,7 @@
 				<!-- Buttons -->
 				<div class="buttons">
 					<a href="#one-1" class="button gray app-link"><i class="fa fa-pencil"></i> Edit</a>
-					<a href="#" class="button gray app-link"><i class="fa fa-inbox"></i> Send Massage</a>
+					<a href="/chat/{{app.worker.username}}" class="button gray "><i class="fa fa-inbox"></i> Send Massage</a>
 					<a href="#three-1" class="button gray app-link"><i class="fa fa-plus-circle"></i> Show Details</a>
 				</div>
 				<div class="clearfix"></div>
@@ -74,20 +74,33 @@
 				
 				<!-- First Tab -->
 			    <div class="app-tab-content" id="one-1">
-
+			    	<form method="POST" > {% csrf_token %} 
 					<div class="select-grid">
-						<select data-placeholder="Application Status" class="chosen-select-no-single">
+						<select name="status" data-placeholder="Application Status" class="chosen-select-no-single">
 							<option value="In Progress">In Progress</option>
 							<option value="Hired">Hire</option>
 							<option value="Rejected">Reject this application</option>
 							
 						</select>
+						<input name="id" style="display:none" value="{{app.id}}" >
 					</div>
+					{% if  vacancy.work_type == "Freelance" %}
+					{% if app.is_done %}
+					{% else %}
+					
+				      <div class="select-grid">
+						<input type="text" name="comment" placeholder="Your comment to freelancer">
+						<button type="submit" class="button gray margin-top-15 delete-application">Task done</button>
+					</div>
+					
+					{% endif %}
+					{% endif %}
+					
 
 					<div class="clearfix"></div>
-					<a href="#" class="button margin-top-15">Save</a>
-					<a href="#" class="button gray margin-top-15 delete-application">Delete this application</a>
-
+					<button type="submit" class="button margin-top-15">Save</button>
+					
+					</form>
 			    </div>
 			    
 			  

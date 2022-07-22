@@ -1,16 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Vacancy, Category, Apply
+from .models import Vacancy, Category, Apply, Done
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.decorators import login_required
 from worker.models import Hire
 
-
+        
 
 
 #-------------------HOME PAGE--------------------------
 def index(request):
-      vacancies = Vacancy.objects.all()
+      vacancies = Vacancy.objects.filter(deleted=False, is_closed=False)
 
       return render(request, 'index.html', {'vacancies':vacancies})
 
@@ -35,7 +35,7 @@ def vacancy_detail(request, pk):
 
     #If vacancy sended by this user
     sended = False
-    apply = Apply.objects.filter(vacancy = vacancy, employer = vacancy.author , worker = request.user)
+    apply = Apply.objects.filter(deleted=False, vacancy = vacancy, employer = vacancy.author , worker = request.user)
     if apply:
         sended = True
     else:
@@ -70,11 +70,11 @@ def manage_vacancies(request):
     massage=""
     #If user is Employer
     if user.is_employer == True and user.is_worker==False :
-        my_ads = Vacancy.objects.filter(author=user).order_by("-id")
+        my_ads = Vacancy.objects.filter(author=user, deleted=False).order_by("-id")
 
         #Count applications to this vacancy
         for ad in my_ads:
-            ad.applications = Apply.objects.filter(vacancy = ad, ).count()
+            ad.applications = Apply.objects.filter(vacancy = ad, deleted=False  ).count()
             ad.save()
 
         #Mark filled function    
@@ -111,11 +111,39 @@ def show_applications(request, pk):
     if user.is_employer == True and user.is_worker==False :
 
         try:
-            vacancy = Vacancy.objects.get(id=pk, author=user)
-            applications = Apply.objects.filter(vacancy=vacancy).order_by("-id")
+            vacancy = Vacancy.objects.get(id=pk, author=user, deleted = False)
+            applications = Apply.objects.filter(vacancy=vacancy, deleted = False).order_by("-id")
             applications.update(new=False)
+
+            
+            
+            
+            if request.method =="POST":
+                if request.POST.get("status"):
+                    id_app = request.POST["id"]
+                    status = request.POST["status"]
+                    app = Apply.objects.filter(id=id_app)
+                    app.update(status=status)
+                    return redirect('manage-applications', vacancy.id)
+
+                elif  request.POST.get("comment") :
+                    id_app = request.POST.get("id")
+                    comment = request.POST["comment"]
+                    app = Apply.objects.get(id=id_app)
+
+                    Done.objects.create(
+                        vacancy  =vacancy,
+                        application = app,
+                        comment=comment,
+                        )
+                    app.is_done = True
+                    app.save()    
+                    return redirect('manage-applications', vacancy.id)
+                        
+
+
         except:
-            massage="Vacancy not found or you are not owner of this vacancy"
+            massage="Vacancies not found or you are not owner of this vacancy"
 
 
     #if user is worker   
@@ -171,7 +199,7 @@ def categories(request):
 
 def category_jobs(request, pk):
     category = Category.objects.get(id=pk)
-    vacancies = Vacancy.objects.filter(category=category)
+    vacancies = Vacancy.objects.filter(category=category, deleted = False, is_closed = False)
     num  = vacancies.count()
     return render(request, 'job/category-jobs.html', {'vacancies':vacancies, "cat":category, 'num':num})
 
